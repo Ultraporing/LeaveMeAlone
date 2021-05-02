@@ -1,5 +1,9 @@
 ﻿# README
 
+## What is it?
+This tool allows you to play GTA5 Online in your own whitelisted session with your Friends, by Blacklisting everyone eles and updating your friends whitelisted IPs in the Firewall everytime you start the program.
+It just reads the ```data.json``` file inside the Guardian folder, this file contains the IPs of your friends and updates the Firewall Rules with the new IPs. 
+
 ## Important
 The Tool requires Admin privileges to Run, since it changes the Windows Firewall Rules. 
 And you need to Enable the Firewall for the Rules to take effect.

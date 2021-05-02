@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\LICENSE" Link="LICENSE">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\README.md" Link="README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
