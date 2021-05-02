@@ -6,9 +6,11 @@ using Microsoft.Win32;
 using NetFwTypeLib;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Runtime.Versioning;
 
 namespace LeaveMeAlone
 {
+    [SupportedOSPlatform("windows")]
     class Program
     {
         static void Main(string[] args)

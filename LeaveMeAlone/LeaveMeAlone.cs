@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,7 @@ using NetFwTypeLib;
 
 namespace LeaveMeAlone
 {
+    [SupportedOSPlatform("windows")]
     public class LeaveMeAlone
     {
         private List<string> SteamGameDirs { get; set; } = new List<string>();
