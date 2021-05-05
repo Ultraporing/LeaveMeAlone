@@ -1,37 +1,20 @@
-## Welcome to GitHub Pages
+![Preview Image](https://repository-images.githubusercontent.com/363516249/f63f8700-aaf5-11eb-8f09-b6875a3a8c85)
 
-You can use the [editor on GitHub](https://github.com/Ultraporing/LeaveMeAlone/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[![LeaveMeAlone Build & Publish](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml/badge.svg?branch=master)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml)
+[![LeaveMeAlone Code Analyze](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml)
+## What is it?
+This tool allows you to play GTA5 Online in your own whitelisted session with your Friends, by Blacklisting everyone eles and updating your friends whitelisted IPs in the Firewall everytime you start the program.
+It just reads the ```data.json``` file inside the Guardian folder, this file contains the IPs of your friends and updates the Firewall Rules with the new IPs. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Important
+The Tool requires Admin privileges to Run, since it changes the Windows Firewall Rules. 
+And you need to Enable the Firewall for the Rules to take effect.
 
-### Markdown
+## How to Use it
+1. Can be skipped if you already got an Guardian Account and the Software setup. You need to go to the [DigitalArc (Guardian) Website](https://www.thedigitalarc.com/software/guardian), create an account, install Guardian on your PC, follow the "activate the cloud feature" Guide and lastly add some friends and whitelist them in guardian.
+After this is all done, you only have to start Guardian to sync the IPs once your public ip changes, or one of your friends IPs.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+2. You can run the Program without any startup parameters to Search the Steamfolders for GTA5. Or you can provide the path to the GTA5.exe if you do not have a Steam version installed.
+i.e: ```LeaveMeAlone.exe "H:\SteamLibrary\steamapps\common\Grand Theft Auto V\GTA5.exe"```
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Ultraporing/LeaveMeAlone/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+3. Once the program finishes, this Tool will Automatically have set the appropriate Windows Firewall Rules to Whitelist your Friends from the DigitalArc Guardian tool and prevent other non friends from joining your session (if you are the host).
