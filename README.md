@@ -2,6 +2,7 @@
 ![Preview Image](https://repository-images.githubusercontent.com/363516249/f63f8700-aaf5-11eb-8f09-b6875a3a8c85)
 
 [![LeaveMeAlone Build & Publish](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml/badge.svg?branch=master)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml)
+[![CodeQL](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml)
 ## What is it?
 This tool allows you to play GTA5 Online in your own whitelisted session with your Friends, by Blacklisting everyone eles and updating your friends whitelisted IPs in the Firewall everytime you start the program.
 It just reads the ```data.json``` file inside the Guardian folder, this file contains the IPs of your friends and updates the Firewall Rules with the new IPs. 
