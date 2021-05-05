@@ -26,8 +26,8 @@ jobs:
     runs-on: windows-latest
 
     permissions:
-      actions: read
-      contents: read
+      actions: write
+      contents: write
       security-events: write
 
     env:
@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'csharp' ]
-        configuration: [ Debug ]
+        configuration: [ Release ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
         # Learn more:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
@@ -112,7 +112,7 @@ jobs:
   #      Appx_Package_Build_Mode: SideLoadOnly
   #      Configuration: ${{ matrix.configuration }}
 
-    - run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }} /p:UseSharedCompilation=false
+    - run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
       env:
             Appx_Bundle: Never
             Appx_Bundle_Platforms: x86|x64
