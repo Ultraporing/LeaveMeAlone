@@ -13,9 +13,9 @@ name: "LeaveMeAlone Code Analyze"
 
 on:
   push:
-    branches: [main, develop]
+    branches: [master, develop]
   pull_request:
-    branches: [main]
+    branches: [master]
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
