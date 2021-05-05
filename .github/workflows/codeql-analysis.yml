@@ -9,31 +9,33 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL"
+name: "LeaveMeAlone Code Analyze"
 
 on:
   push:
-    branches: [  ]
+    branches: [main, develop]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [  ]
-  schedule:
-    - cron: '30 22 * * 1'
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
 
 jobs:
   analyze:
     name: Analyze
     runs-on: windows-latest
-    env:
-      Solution_Name: LeaveMeAlone.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      #Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: LeaveMeAloneWAP    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: LeaveMeAloneWAP\LeaveMeAloneWAP.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+
     permissions:
       actions: read
       contents: read
       security-events: write
 
+    env:
+      Solution_Name: LeaveMeAlone.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
+      #Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Wap_Project_Directory: LeaveMeAloneWAP    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+      Wap_Project_Path: LeaveMeAloneWAP\LeaveMeAloneWAP.wapproj                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+    
     strategy:
       fail-fast: false
       matrix:

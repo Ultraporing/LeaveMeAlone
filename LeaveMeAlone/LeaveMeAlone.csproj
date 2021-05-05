@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.github\workflows\codeql-analysis.yml" Link="codeql-analysis.yml" />
     <None Include="..\.github\workflows\dotnet-desktop.yml" Link="dotnet-desktop.yml" />
     <None Include="..\LICENSE" Link="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
