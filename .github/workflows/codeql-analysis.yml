@@ -112,7 +112,7 @@ jobs:
   #      Appx_Package_Build_Mode: SideLoadOnly
   #      Configuration: ${{ matrix.configuration }}
 
-    - run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
+    - run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:UseSharedCompilation=false
       env:
             Appx_Bundle: Never
             Appx_Bundle_Platforms: x86|x64
