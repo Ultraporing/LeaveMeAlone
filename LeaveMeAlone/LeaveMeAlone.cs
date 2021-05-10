@@ -35,14 +35,6 @@ namespace LeaveMeAlone
                 ErrorCode = EErrorCode.REQUIRES_ADMIN_RIGHTS;
                 ShowMessageAndExit();
             }
-                
-            SearchGTA5InSteamApps();
-            FindGuardianInstallation();
-            BuildIPWhitelist();
-            UpdateFWRules();
-
-            Console.WriteLine("Done, Press Enter to close...");
-            Console.ReadLine();
         }
 
         public LeaveMeAlone(string gta5ExePath)
@@ -53,17 +45,21 @@ namespace LeaveMeAlone
                 ShowMessageAndExit();
             }
 
-            Console.WriteLine($"GTA5.exe location was provided, using this path now");
-
             GTA5ExePath = gta5ExePath;
+        }
 
-            CheckFileExists(GTA5ExePath);
+        public void AddFirewallRules()
+        {
+            if (string.IsNullOrEmpty(GTA5ExePath))
+                SearchGTA5InSteamApps();
+            else
+            {
+                CheckFileExists(GTA5ExePath);
+            }
+            
             FindGuardianInstallation();
             BuildIPWhitelist();
             UpdateFWRules();
-
-            Console.WriteLine("Done, Press Enter to close...");
-            Console.ReadLine();
         }
 
         private void CheckFileExists(string filePath)
