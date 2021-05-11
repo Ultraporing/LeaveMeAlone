@@ -1,5 +1,5 @@
 ﻿# README
-![Preview Image](https://repository-images.githubusercontent.com/363516249/f63f8700-aaf5-11eb-8f09-b6875a3a8c85)
+![Preview Image](https://repository-images.githubusercontent.com/363516249/ed427880-b2a0-11eb-9566-8bf9bc4218fe)
 
 [![LeaveMeAlone Build & Publish](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml/badge.svg?branch=master)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/dotnet-desktop.yml)
 [![LeaveMeAlone Code Analyze](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/Ultraporing/LeaveMeAlone/actions/workflows/codeql-analysis.yml)
