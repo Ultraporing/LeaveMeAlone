@@ -13,12 +13,7 @@ name: "LeaveMeAlone Code Analyze"
 
 on:
   push:
-    branches: [master, develop]
-  pull_request:
-    branches: [master]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
+    branches: ['**']
 
 jobs:
   analyze:
@@ -112,7 +107,8 @@ jobs:
   #      Appx_Package_Build_Mode: SideLoadOnly
   #      Configuration: ${{ matrix.configuration }}
 
-    - run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:UseSharedCompilation=false
+    - name: Build Project
+      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:UseSharedCompilation=false
       env:
             Appx_Bundle: Never
             Appx_Bundle_Platforms: x86|x64
