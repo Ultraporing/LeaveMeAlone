@@ -231,7 +231,33 @@ namespace LeaveMeAlone
             UpdateOutboundFWRules();
         }
 
-        private void ClearGTA5FWRules()
+        public List<string> GetExistingGTA5Rules()
+        {
+            List<string> rulesList = new List<string>();
+
+            try
+            {
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                
+                foreach (INetFwRule p in firewallPolicy.Rules)
+                {
+                    if (p.ApplicationName != null)
+                        if (p.ApplicationName.Contains("GTA5.exe"))
+                        {
+                            rulesList.Add(p.Name);
+                        }
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorCode = EErrorCode.FAILED_TO_CHANGE_WINDOWS_FIREWALL;
+                ShowMessageAndExit(e.ToString());
+            }
+
+            return rulesList;
+        }
+
+        public void ClearGTA5FWRules()
         {
             try
             {
@@ -239,17 +265,9 @@ namespace LeaveMeAlone
 
                 INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
 
-                List<string> delList = new List<string>();
-                foreach (INetFwRule p in firewallPolicy.Rules)
-                {
-                    if (p.ApplicationName != null)
-                        if (p.ApplicationName.Contains("GTA5.exe"))
-                        {
-                            delList.Add(p.Name);
-                        }
-                }
+                List<string> delList = GetExistingGTA5Rules();
 
-                foreach(string s in delList)
+                foreach (string s in delList)
                 {
                     firewallPolicy.Rules.Remove(s);
                 }
