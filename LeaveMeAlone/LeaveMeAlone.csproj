@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConsoleMenu-simple" Version="2.4.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.3.21201.4" />
   </ItemGroup>
 

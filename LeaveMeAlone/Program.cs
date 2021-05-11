@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using Microsoft.Win32;
-using NetFwTypeLib;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 
 namespace LeaveMeAlone
 {
@@ -15,7 +7,8 @@ namespace LeaveMeAlone
     {
         static void Main(string[] args)
         {
-            LeaveMeAlone leaveMeAlone = args.Length > 0 ? new LeaveMeAlone(Path.GetFullPath(args[0]).ToString()) : new LeaveMeAlone();
+            MainMenu menu = new MainMenu(args);
+            menu.Display();
         }
     }
 }
