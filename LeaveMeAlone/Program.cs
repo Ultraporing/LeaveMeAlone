@@ -3,11 +3,11 @@
 namespace LeaveMeAlone
 {
     [SupportedOSPlatform("windows")]
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            MainMenu menu = new MainMenu(args);
+            MainMenu menu = new(args);
             menu.Display();
         }
     }

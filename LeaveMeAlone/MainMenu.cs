@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.Versioning;
 using ConsoleTools;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace LeaveMeAlone
 {
@@ -44,13 +43,13 @@ namespace LeaveMeAlone
 
         public void UpdateMenuEntries()
         {
-            if (LeaveMeAlone.GetExistingGTA5Rules().Count > 0)
+            if (LeaveMeAlone.GetExistingRules().Count > 0)
             {
                 Menu.Items[0].Name = "Disable Friend Only";
-                Menu.Items[0].Action = () => 
-                { 
-                    DisableFriendOnly(); 
-                    WaitForEnter(); 
+                Menu.Items[0].Action = () =>
+                {
+                    DisableFriendOnly();
+                    WaitForEnter();
                 };
             }
             else
@@ -66,7 +65,7 @@ namespace LeaveMeAlone
 
         private void DisableFriendOnly()
         {
-            LeaveMeAlone.ClearGTA5FWRules();
+            LeaveMeAlone.ClearFWRules();
             UpdateMenuEntries();
         }
 

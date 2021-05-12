@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Security.Principal;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
@@ -13,56 +10,51 @@ using NetFwTypeLib;
 namespace LeaveMeAlone
 {
     [SupportedOSPlatform("windows")]
-    public class LeaveMeAlone
+    public class LeaveMeAlone : WinFWChanger
     {
-        private List<string> SteamGameDirs { get; set; } = new List<string>();
+        private List<string> SteamGameDirs { get; } = new List<string>();
         private string GTA5ExePath { get; set; } = string.Empty;
         private string GuardianJSONPath { get; set; } = string.Empty;
-        private List<string> WhitelistedIps { get; set; } = new List<string>();
-        private EErrorCode ErrorCode { get; set; } = EErrorCode.OK;
-        private bool IsElevated
-        {
-            get
-            {
-                return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-            }
-        }
 
         public LeaveMeAlone()
         {
+            ErrorCode = EErrorCode.OK;
+
             if (!IsElevated)
             {
                 ErrorCode = EErrorCode.REQUIRES_ADMIN_RIGHTS;
-                ShowMessageAndExit();
+                ShowMessageAndExit(ErrorCode);
             }
         }
 
         public LeaveMeAlone(string gta5ExePath)
         {
+            ErrorCode = EErrorCode.OK;
+
             if (!IsElevated)
             {
                 ErrorCode = EErrorCode.REQUIRES_ADMIN_RIGHTS;
-                ShowMessageAndExit();
+                ShowMessageAndExit(ErrorCode);
             }
 
             GTA5ExePath = gta5ExePath;
         }
 
-        public void AddFirewallRules()
+        public override void AddFirewallRules()
         {
             if (string.IsNullOrEmpty(GTA5ExePath))
                 SearchGTA5InSteamApps();
             else
             {
-                CheckFileExists(GTA5ExePath);
+                base.CheckFileExists(GTA5ExePath);
             }
-            
+
             FindGuardianInstallation();
             BuildIPWhitelist();
             UpdateFWRules();
         }
 
-        private void CheckFileExists(string filePath)
+        protected override void CheckFileExists(string filePath)
         {
             if (File.Exists(filePath))
             {
@@ -82,17 +74,9 @@ namespace LeaveMeAlone
                     ErrorCode = EErrorCode.GUARDIAN_PATH_INVALID;
 
                 Console.WriteLine($"{Path.GetFileName(filePath)} not found");
-               
-                ShowMessageAndExit();
-            }
-        }
 
-        private void ShowMessageAndExit(string optAdditionalMsg = "")
-        {
-            Console.WriteLine($"The Application Exited with the ErrorCode:{Enum.GetName(typeof(EErrorCode), ErrorCode)}.");
-            Console.WriteLine($"{optAdditionalMsg}\nPress Enter to close...");
-            Console.ReadLine();
-            Environment.Exit((int)ErrorCode);
+                ShowMessageAndExit(ErrorCode);
+            }
         }
 
         private void SearchGTA5InSteamApps()
@@ -115,28 +99,26 @@ namespace LeaveMeAlone
                 {
                     foreach (string k32subKey in key32.GetSubKeyNames())
                     {
-                        using (RegistryKey subKey = key32.OpenSubKey(k32subKey))
+                        using RegistryKey subKey = key32.OpenSubKey(k32subKey);
+                        steam32path = subKey.GetValue("InstallPath").ToString();
+                        config32path = steam32path + "/steamapps/libraryfolders.vdf";
+                        string driveRegex = @"[A-Z]:\\";
+                        if (File.Exists(config32path))
                         {
-                            steam32path = subKey.GetValue("InstallPath").ToString();
-                            config32path = steam32path + "/steamapps/libraryfolders.vdf";
-                            string driveRegex = @"[A-Z]:\\";
-                            if (File.Exists(config32path))
+                            string[] configLines = File.ReadAllLines(config32path);
+                            foreach (string item in configLines)
                             {
-                                string[] configLines = File.ReadAllLines(config32path);
-                                foreach (var item in configLines)
+                                Match match = Regex.Match(item, driveRegex);
+                                if (item != string.Empty && match.Success)
                                 {
-                                    Match match = Regex.Match(item, driveRegex);
-                                    if (item != string.Empty && match.Success)
-                                    {
-                                        string matched = match.ToString();
-                                        string item2 = item.Substring(item.IndexOf(matched));
-                                        item2 = item2.Replace("\\\\", "\\");
-                                        item2 = item2.Replace("\"", "\\steamapps\\common\\");
-                                        SteamGameDirs.Add(item2);
-                                    }
+                                    string matched = match.ToString();
+                                    string item2 = item.Substring(item.IndexOf(matched));
+                                    item2 = item2.Replace("\\\\", "\\");
+                                    item2 = item2.Replace("\"", "\\steamapps\\common\\");
+                                    SteamGameDirs.Add(item2);
                                 }
-                                SteamGameDirs.Add(steam32path + "\\steamapps\\common\\");
                             }
+                            SteamGameDirs.Add(steam32path + "\\steamapps\\common\\");
                         }
                     }
                 }
@@ -152,7 +134,7 @@ namespace LeaveMeAlone
                             if (File.Exists(config64path))
                             {
                                 string[] configLines = File.ReadAllLines(config64path);
-                                foreach (var item in configLines)
+                                foreach (string item in configLines)
                                 {
                                     Match match = Regex.Match(item, driveRegex);
                                     if (item != string.Empty && match.Success)
@@ -185,7 +167,7 @@ namespace LeaveMeAlone
             {
                 ErrorCode = EErrorCode.FAILED_TO_LOOKUP_REGISTRY_KEY;
                 ShowMessageAndExit(e.ToString());
-            }        
+            }
         }
 
         private void FindGuardianInstallation()
@@ -211,7 +193,7 @@ namespace LeaveMeAlone
             }
         }
 
-        private void BuildIPWhitelist()
+        protected override void BuildIPWhitelist()
         {
             WhitelistedIps.Clear();
             string js = File.ReadAllText(GuardianJSONPath);
@@ -224,21 +206,14 @@ namespace LeaveMeAlone
                 }
         }
 
-        private void UpdateFWRules()
-        {
-            ClearGTA5FWRules();
-            UpdateInboundFWRules();
-            UpdateOutboundFWRules();
-        }
-
-        public List<string> GetExistingGTA5Rules()
+        public override List<string> GetExistingRules()
         {
             List<string> rulesList = new List<string>();
 
             try
             {
                 INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-                
+
                 foreach (INetFwRule p in firewallPolicy.Rules)
                 {
                     if (p.ApplicationName != null)
@@ -257,7 +232,7 @@ namespace LeaveMeAlone
             return rulesList;
         }
 
-        public void ClearGTA5FWRules()
+        public override void ClearFWRules()
         {
             try
             {
@@ -265,7 +240,7 @@ namespace LeaveMeAlone
 
                 INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
 
-                List<string> delList = GetExistingGTA5Rules();
+                List<string> delList = GetExistingRules();
 
                 foreach (string s in delList)
                 {
@@ -276,10 +251,10 @@ namespace LeaveMeAlone
             {
                 ErrorCode = EErrorCode.FAILED_TO_CHANGE_WINDOWS_FIREWALL;
                 ShowMessageAndExit(e.ToString());
-            }         
+            }
         }
 
-        private void UpdateInboundFWRules()
+        protected override void UpdateInboundFWRules()
         {
             try
             {
@@ -318,7 +293,7 @@ namespace LeaveMeAlone
             }
         }
 
-        private void UpdateOutboundFWRules()
+        protected override void UpdateOutboundFWRules()
         {
             try
             {
