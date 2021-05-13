@@ -275,7 +275,7 @@ namespace LeaveMeAlone
                 firewallRule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
                 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
                 firewallRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK;
-                firewallRule.RemoteAddresses = string.Join(",", WhitelistedIps);
+                firewallRule.RemoteAddresses = "*";//string.Join(",", WhitelistedIps);
                 firewallRule.ApplicationName = GTA5ExePath;
                 firewallRule.Enabled = true;
                 firewallRule.InterfaceTypes = "All";
